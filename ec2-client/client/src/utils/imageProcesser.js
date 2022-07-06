@@ -1,5 +1,6 @@
 import axios from "axios";
-
+const FormData = require('form-data');
+const url = "http://localhost:5000"
 export async function processImage(image) {
     const userid = "lisenor"// need to get the active users id
     try {
@@ -7,7 +8,6 @@ export async function processImage(image) {
         await createTable(userid);
         const key = await uploadToBucket(image, userid);
         const text = await getText(userid, key);
-        console.log(text);
         return text;  
 
     } catch (e) {
@@ -17,36 +17,40 @@ export async function processImage(image) {
 }
 
 async function createTable(userid) {
-    axios.post("/text/createtable/"+userid).then(result => {
-        console.log(result);
-    }).catch(e => {
+    try {
+        const response = await axios.post(url+"/text/createtable/"+userid)
+        console.log(response);
+    }catch(e) {
         console.log(e);
-    });
+    };
 }
 
 //https://www.codegrepper.com/code-examples/javascript/axios+file+upload
 async function uploadToBucket(image, userid) {
-    axios.put("/images/upload/"+userid, image, { 
-        headers: {
-            'Content-Type': image.type
-        }
-      }).then(result => {
-        console.log(result);
-        return result.data.key;
-    }).catch(e => {
+    const form = new FormData();
+    form.append("image", image, image.name);
+    console.log(image)
+    try {
+        const response = await axios.put(url+"/images/upload/"+userid, form, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        console.log("upload successful")
+        return response.data.key;
+    }catch(e){
         console.log(e);
-    });
+    };
 }
 
 async function getText(userid, key) {
+    try{
+        await new Promise(r => setTimeout(r, 8000)); //change this
 
-    await new Promise(r => setTimeout(r, 6000)); //change this
-
-    var text = "";
-    axios.get("/images/"+userid+"/"+key).then(result => {
-            text = result.data.text;
-        }).catch(e => {
-            console.log(e);
-        });
-    return text;
+        var text = "";
+        const response = await axios.get(url+"/text/"+userid+"/"+key);
+        return response.data.text;
+    }catch(e) {
+        console.log(e);
+    };
 }
