@@ -1,9 +1,9 @@
 const router = require("express").Router();
 const { uploadImage } = require("../models/imageModel");
+const multer = require('multer');
 
-router.put("/upload/:userid", async (req, res) => {
-    //how send image in request and retrieve?
-    const image = req.body.image;
+router.put("/upload/:userid", multer().array('image',1), async (req, res) => {
+    const image = req.files[0];
     const userid = req.params.userid;
     try {
         const key = await uploadImage(image, userid);

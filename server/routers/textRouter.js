@@ -18,7 +18,7 @@ router.get("/:userid/:key", async (req, res) => {
 router.post("/createtable/:userid/", async (req, res) => {
     const userId = req.params.userid;
     try {
-        var text = await createTable(userId);
+        await createTable(userId);
         res.status(200).send("table created");
     } catch (err) {
         console.log(err);

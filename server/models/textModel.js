@@ -3,6 +3,8 @@ const { DynamoDBClient, GetItemCommand, CreateTableCommand, ResourceInUseExcepti
 //References for using aws sdk for dynamoDB: https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-dynamodb/classes/getitemcommand.html
 //https://docs.amazonaws.cn/en_us/amazondynamodb/latest/developerguide/example_dynamodb_CreateTable_section.html
 async function getText(tableName, key) {
+    console.log("key")
+    console.log(key)
     const db = new DynamoDBClient({region: 'us-east-1'});
     const getitemcommand = new GetItemCommand({
         TableName: tableName, 
@@ -11,7 +13,6 @@ async function getText(tableName, key) {
         }
     });
     const dbResponse = await db.send(getitemcommand);
-    console.log(dbResponse);
     var text = dbResponse.Item.text.S;
     return text;
 }
@@ -42,7 +43,6 @@ async function createTable(userid) {
     });
     try {
         const dbResponse = await db.send(createTableCommand);
-        console.log(dbResponse);
     } catch (e) {
         if (e instanceof ResourceInUseException) {
             console.log("user table already exists");

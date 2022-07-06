@@ -10,14 +10,13 @@ async function uploadImage(image, userid) {
     const putObjectCommand = new PutObjectCommand({
         Bucket: bucketName, 
         Key: fullKey,
-        Body: image,
+        Body: image.buffer,
         Metadata: {
-            name: image.name
+            name: image.originalname
         }
     });
     const s3Response = await s3.send(putObjectCommand);
-    console.log(s3Response);
-    return fullKey;
+    return fullKey.split("/")[1];
 }
 
 module.exports = { uploadImage };
