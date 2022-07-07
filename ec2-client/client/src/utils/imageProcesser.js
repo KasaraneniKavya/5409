@@ -1,24 +1,24 @@
 import axios from "axios";
 const FormData = require('form-data');
-const url = "http://group42-dal-2.us-east-1.elasticbeanstalk.com";
+const url = "http://group42-dal-eb-1.us-east-1.elasticbeanstalk.com";
 
 export async function processImage(image) {
-    const userid = "lisenor"// need to get the active users id
+    const userid = "lisenor" // need to get the active users id
     try {
         await createTable(userid);
         const key = await uploadToBucket(image, userid);
         const text = await getText(userid, key);
-        return text;  
-    } catch(e) {
+        return text;
+    } catch (e) {
         console.log(e);
     }
 }
 
 async function createTable(userid) {
     try {
-        const response = await axios.post(url+"/text/createtable/"+userid)
+        const response = await axios.post(url + "/text/createtable/" + userid)
         console.log(response);
-    }catch(e) {
+    } catch (e) {
         console.log(e);
     };
 }
@@ -29,29 +29,29 @@ async function uploadToBucket(image, userid) {
     form.append("image", image, image.name);
     console.log(image)
     try {
-        const response = await axios.put(url+"/images/upload/"+userid, form, {
+        const response = await axios.put(url + "/images/upload/" + userid, form, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         });
         console.log("upload successful")
         return response.data.key;
-    }catch(e){
+    } catch (e) {
         console.log(e);
         alert("Error uploading image");
-        throw(e);
+        throw (e);
     };
 }
 
 async function getText(userid, key) {
     var text = null;
-    for (let tries=0; tries<3 && !text; tries++) {
-        try{
+    for (let tries = 0; tries < 3 && !text; tries++) {
+        try {
             await new Promise(r => setTimeout(r, 2000));
-            const response = await axios.get(url+"/text/"+userid+"/"+key);
+            const response = await axios.get(url + "/text/" + userid + "/" + key);
             text = response.data.text;
-        }catch(e) {
-            console.log("Could not get text. Attempt: "+tries)
+        } catch (e) {
+            console.log("Could not get text. Attempt: " + tries)
             console.log(e);
         }
     }

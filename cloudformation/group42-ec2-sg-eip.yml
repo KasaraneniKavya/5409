@@ -1,6 +1,6 @@
 Parameters:
   SecurityGroupDescription:
-    Description: Security Group for Group42 Instances
+    Description: Security Group for Group42 Instance
     Type: String
   KeyName:
     Description: Key Pair for EC2
@@ -19,11 +19,22 @@ Resources:
       UserData: 
         Fn::Base64: !Sub |
           #!/bin/bash
-          yum update -y
-          yum install -y httpd
-          systemctl start httpd
-          systemctl enable httpd
-          #echo "<h1>Hello from Region us-east-1a</h1>" > /var/www/html/index.html
+          sudo yum update -y
+          sudo yum install git -y
+          mkdir /home/ec2-user/cloud
+          cd /home/ec2-user/cloud
+          git clone https://callmehetch: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@github.com/callmehetch/group42-dal-client.git
+          cd /home/ec2-user/cloud/group42-dal-client
+          yum install -y gcc-c++ make
+          yum install curl -y
+          curl -sL https://rpm.nodesource.com/setup_16.x | sudo -E bash -
+          sudo yum install -y nodejs
+          sudo yum install npm
+          sudo npm i
+          screen
+          sudo npm start --host=0.0.0.0 --port=80
+      Tags : [
+            {"Key" : "Name", "Value" : "group42-dal-ec2-cf-a"}]
 
   EC2Instance2:
     Type: AWS::EC2::Instance
@@ -37,11 +48,24 @@ Resources:
       UserData: 
         Fn::Base64: !Sub |
           #!/bin/bash
-          yum update -y
-          yum install -y httpd
-          systemctl start httpd
-          systemctl enable httpd
-          #echo "<h1>Hello from Region us-east-1b</h1>" > /var/www/html/index.html
+          sudo yum update -y
+          sudo yum install git -y
+          mkdir /home/ec2-user/cloud
+          cd /home/ec2-user/cloud
+          git clone https://callmehetch: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@github.com/callmehetch/group42-dal-client.git
+          cd /home/ec2-user/cloud/group42-dal-client
+          yum install -y gcc-c++ make
+          yum install curl -y
+          curl -sL https://rpm.nodesource.com/setup_16.x | sudo -E bash -
+          sudo yum install -y nodejs
+          sudo yum install npm
+          sudo npm i
+          screen
+          sudo npm start --host=0.0.0.0 --port=80
+
+
+      Tags : [
+            {"Key" : "Name", "Value" : "group42-dal-ec2-cf-b"}]
           
   # security group
   ELBSecurityGroup:
@@ -70,6 +94,12 @@ Resources:
         FromPort: 22
         ToPort: 22
         CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 5000
+        ToPort: 5000
+        CidrIp: 0.0.0.0/0
+      Tags : [
+            {"Key" : "Name", "Value" : "group42-dal-sg-cf"}]
 
   # Load Balancer for EC2
   LoadBalancerforEC2:
@@ -91,3 +121,7 @@ Resources:
         Timeout: '5'
       SecurityGroups:
         - !GetAtt ELBSecurityGroup.GroupId
+Outputs:
+  PublicIp:
+    Description: "EC2"
+    Value: !Sub http://${EC2Instance1}

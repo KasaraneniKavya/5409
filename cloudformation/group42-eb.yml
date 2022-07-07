@@ -1,0 +1,61 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters: 
+  BucketEB: 
+    Description: Enter the bucket name where you uploaded the app in S3
+    Default: group42-eb
+    Type: String
+  EBRole:
+    Default: 'arn:aws:iam::426166733966:role/LabRole'
+    Type: String
+Resources:
+  BackendApp:
+    Type: AWS::ElasticBeanstalk::Application
+    Properties:
+      Description: AWS Elastic Beanstalk Sample Application
+  BackendAppVersion:
+    Type: AWS::ElasticBeanstalk::ApplicationVersion
+    Properties:
+      ApplicationName:
+        Ref: BackendApp
+      Description: AWS ElasticBeanstalk Sample Application Version
+      SourceBundle:
+        S3Bucket: group42-eb
+        S3Key: server.zip
+  BackendConfigurationTemplate:
+    Type: AWS::ElasticBeanstalk::ConfigurationTemplate
+    Properties:
+      ApplicationName:
+        Ref: BackendApp
+      Description: AWS ElasticBeanstalk Configuration Template
+      OptionSettings:
+      - Namespace: aws:autoscaling:asg
+        OptionName: MinSize
+        Value: '2'
+      - Namespace: aws:autoscaling:asg
+        OptionName: MaxSize
+        Value: '6'
+      - Namespace: aws:elasticbeanstalk:environment
+        OptionName: EnvironmentType
+        Value: LoadBalanced
+      - Namespace: aws:autoscaling:launchconfiguration
+        OptionName: IamInstanceProfile
+        Value:
+          Ref: MyInstanceProfile
+      SolutionStackName: 64bit Amazon Linux 2 v5.5.1 running Node.js 12
+  BackendEnvironment:
+    Type: AWS::ElasticBeanstalk::Environment
+    Properties:
+      ApplicationName:
+        Ref: BackendApp
+      Description: Backend application on AWS Beanstalk
+      TemplateName:
+        Ref: BackendConfigurationTemplate
+      VersionLabel:
+        Ref: BackendAppVersion
+
+  MyInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+      - Ref: !Sub ${EBRole}
