@@ -14,18 +14,6 @@ Resources:
       OwnershipControls:
         Rules:
           - ObjectOwnership: BucketOwnerEnforced
-      CorsConfiguration: 
-        CorsRules: 
-          - 
-            AllowedHeaders: 
-              - "*"
-            AllowedMethods: 
-              - GET
-              - PUT
-              - POST
-            AllowedOrigins: 
-              - "*"
-            Id: s3CorsRule
       NotificationConfiguration: 
         LambdaConfigurations: 
           - 
