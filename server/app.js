@@ -17,7 +17,7 @@ app.use("/images", imageRouter);
 app.use("/text", textRouter);
 
 app.get("/", (req, res) => {
-    res.send("<h1>Hello from the server side!</h1>");
+    res.send("<h1>Hello from the server!</h1>");
 });
 
 app.listen(PORT, () => {

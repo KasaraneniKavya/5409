@@ -19,7 +19,7 @@ Resources:
       UserData: 
         Fn::Base64: !Sub |
           #!/bin/bash
-           sudo yum update -y
+          sudo yum update -y
           sudo yum install git -y
           mkdir /home/ec2-user/cloud
           cd /home/ec2-user/cloud
@@ -33,7 +33,6 @@ Resources:
           sudo npm i
           screen
           sudo npm start --host=0.0.0.0 --port=80
-
       Tags : [
             {"Key" : "Name", "Value" : "group42-dal-ec2-cf-a"}]
 
@@ -122,3 +121,7 @@ Resources:
         Timeout: '5'
       SecurityGroups:
         - !GetAtt ELBSecurityGroup.GroupId
+Outputs:
+  PublicIp:
+    Description: "EC2"
+    Value: !Sub http://${EC2Instance1}

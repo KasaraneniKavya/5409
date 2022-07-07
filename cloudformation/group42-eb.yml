@@ -1,24 +1,33 @@
+---
 AWSTemplateFormatVersion: '2010-09-09'
+Parameters: 
+  BucketEB: 
+    Description: Enter the bucket name where you uploaded the app in S3
+    Default: group42-eb
+    Type: String
+  EBRole:
+    Default: 'arn:aws:iam::426166733966:role/LabRole'
+    Type: String
 Resources:
-  sampleApplication:
+  BackendApp:
     Type: AWS::ElasticBeanstalk::Application
     Properties:
       Description: AWS Elastic Beanstalk Sample Application
-  sampleApplicationVersion:
+  BackendAppVersion:
     Type: AWS::ElasticBeanstalk::ApplicationVersion
     Properties:
       ApplicationName:
-        Ref: sampleApplication
+        Ref: BackendApp
       Description: AWS ElasticBeanstalk Sample Application Version
       SourceBundle:
-        S3Bucket: !Sub "elasticbeanstalk-samples-${AWS::Region}"
-        S3Key: php-newsample-app.zip
-  sampleConfigurationTemplate:
+        S3Bucket: group42-eb
+        S3Key: server.zip
+  BackendConfigurationTemplate:
     Type: AWS::ElasticBeanstalk::ConfigurationTemplate
     Properties:
       ApplicationName:
-        Ref: sampleApplication
-      Description: AWS ElasticBeanstalk Sample Configuration Template
+        Ref: BackendApp
+      Description: AWS ElasticBeanstalk Configuration Template
       OptionSettings:
       - Namespace: aws:autoscaling:asg
         OptionName: MinSize
@@ -31,37 +40,22 @@ Resources:
         Value: LoadBalanced
       - Namespace: aws:autoscaling:launchconfiguration
         OptionName: IamInstanceProfile
-        Value: !Ref MyInstanceProfile        
-      SolutionStackName: solution-stack
-  sampleEnvironment:
+        Value:
+          Ref: MyInstanceProfile
+      SolutionStackName: 64bit Amazon Linux 2 v5.5.1 running Node.js 12
+  BackendEnvironment:
     Type: AWS::ElasticBeanstalk::Environment
     Properties:
       ApplicationName:
-        Ref: sampleApplication
-      Description: AWS ElasticBeanstalk Sample Environment
+        Ref: BackendApp
+      Description: Backend application on AWS Beanstalk
       TemplateName:
-        Ref: sampleConfigurationTemplate
+        Ref: BackendConfigurationTemplate
       VersionLabel:
-        Ref: sampleApplicationVersion
-  MyInstanceRole:
-    Type: AWS::IAM::Role
-    Properties: 
-      AssumeRolePolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - ec2.amazonaws.com
-            Action:
-              - sts:AssumeRole
-      Description: Beanstalk EC2 role
-      ManagedPolicyArns: 
-        - arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier
-        - arn:aws:iam::aws:policy/AWSElasticBeanstalkMulticontainerDocker
-        - arn:aws:iam::aws:policy/AWSElasticBeanstalkWorkerTier
+        Ref: BackendAppVersion
+
   MyInstanceProfile:
     Type: AWS::IAM::InstanceProfile
-    Properties: 
+    Properties:
       Roles:
-        - !Ref MyInstanceRole
+      - Ref: !Sub ${EBRole}

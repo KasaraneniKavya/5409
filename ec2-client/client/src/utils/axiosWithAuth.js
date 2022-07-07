@@ -11,8 +11,7 @@ export async function axiosWithAuth(method, path) {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${idToken}`,
                 },
-            })
-            [method](path);
+            })[method](path);
     } catch (err) {
         throw err;
     }
