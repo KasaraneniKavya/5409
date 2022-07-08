@@ -1,13 +1,5 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Parameters: 
-  BucketEB: 
-    Description: Enter the bucket name where you uploaded the app in S3
-    Default: group42-eb
-    Type: String
-  EBRole:
-    Default: 'arn:aws:iam::426166733966:role/LabRole'
-    Type: String
 Resources:
   BackendApp:
     Type: AWS::ElasticBeanstalk::Application
@@ -20,8 +12,8 @@ Resources:
         Ref: BackendApp
       Description: AWS ElasticBeanstalk Sample Application Version
       SourceBundle:
-        S3Bucket: group42-eb
-        S3Key: server.zip
+        S3Bucket: cloudnamdeapp
+        S3Key: backend.zip
   BackendConfigurationTemplate:
     Type: AWS::ElasticBeanstalk::ConfigurationTemplate
     Properties:
@@ -53,9 +45,25 @@ Resources:
         Ref: BackendConfigurationTemplate
       VersionLabel:
         Ref: BackendAppVersion
-
+  MyInstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - ec2.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Description: Beanstalk EC2 role
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier
+      - arn:aws:iam::aws:policy/AWSElasticBeanstalkMulticontainerDocker
+      - arn:aws:iam::aws:policy/AWSElasticBeanstalkWorkerTier
   MyInstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
       Roles:
-      - Ref: !Sub ${EBRole}
+      - Ref: MyInstanceRole
