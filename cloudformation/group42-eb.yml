@@ -1,23 +1,14 @@
----
 AWSTemplateFormatVersion: '2010-09-09'
-Parameters: 
-  BucketEB: 
-    Description: Enter the bucket name where you uploaded the app in S3
-    Default: group42-eb
-    Type: String
-  EBRole:
-    Default: 'arn:aws:iam::426166733966:role/LabRole'
-    Type: String
 Resources:
-  BackendApp:
+  Server:
     Type: AWS::ElasticBeanstalk::Application
     Properties:
       Description: AWS Elastic Beanstalk Sample Application
-  BackendAppVersion:
+  ServerVersion:
     Type: AWS::ElasticBeanstalk::ApplicationVersion
     Properties:
       ApplicationName:
-        Ref: BackendApp
+        Ref: Server
       Description: AWS ElasticBeanstalk Sample Application Version
       SourceBundle:
         S3Bucket: group42-eb
@@ -26,7 +17,7 @@ Resources:
     Type: AWS::ElasticBeanstalk::ConfigurationTemplate
     Properties:
       ApplicationName:
-        Ref: BackendApp
+        Ref: Server
       Description: AWS ElasticBeanstalk Configuration Template
       OptionSettings:
       - Namespace: aws:autoscaling:asg
@@ -38,24 +29,26 @@ Resources:
       - Namespace: aws:elasticbeanstalk:environment
         OptionName: EnvironmentType
         Value: LoadBalanced
+      - Namespace: aws:elasticbeanstalk:application:environment
+        OptionName: DB_ENV
+        Value: production
       - Namespace: aws:autoscaling:launchconfiguration
         OptionName: IamInstanceProfile
         Value:
           Ref: MyInstanceProfile
-      SolutionStackName: 64bit Amazon Linux 2 v5.5.1 running Node.js 12
+      SolutionStackName: 64bit Amazon Linux 2 v5.5.4 running Node.js 12
   BackendEnvironment:
     Type: AWS::ElasticBeanstalk::Environment
     Properties:
       ApplicationName:
-        Ref: BackendApp
+        Ref: Server
       Description: Backend application on AWS Beanstalk
       TemplateName:
         Ref: BackendConfigurationTemplate
       VersionLabel:
-        Ref: BackendAppVersion
-
+        Ref: ServerVersion
   MyInstanceProfile:
     Type: AWS::IAM::InstanceProfile
-    Properties:
+    Properties: 
       Roles:
-      - Ref: !Sub ${EBRole}
+       - LabRole

@@ -124,4 +124,4 @@ Resources:
 Outputs:
   PublicIp:
     Description: "EC2"
-    Value: !Sub http://${EC2Instance1}
+    Value: !GetAtt EC2Instance1.PublicIp
