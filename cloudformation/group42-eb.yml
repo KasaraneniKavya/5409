@@ -1,14 +1,14 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Resources:
-  BackendApp:
+  Server:
     Type: AWS::ElasticBeanstalk::Application
     Properties:
       Description: AWS Elastic Beanstalk Sample Application
-  BackendAppVersion:
+  ServerVersion:
     Type: AWS::ElasticBeanstalk::ApplicationVersion
     Properties:
       ApplicationName:
-        Ref: BackendApp
+        Ref: Server
       Description: AWS ElasticBeanstalk Sample Application Version
       SourceBundle:
         S3Bucket: group42-eb
@@ -17,7 +17,7 @@ Resources:
     Type: AWS::ElasticBeanstalk::ConfigurationTemplate
     Properties:
       ApplicationName:
-        Ref: BackendApp
+        Ref: Server
       Description: AWS ElasticBeanstalk Configuration Template
       OptionSettings:
       - Namespace: aws:autoscaling:asg
@@ -41,12 +41,12 @@ Resources:
     Type: AWS::ElasticBeanstalk::Environment
     Properties:
       ApplicationName:
-        Ref: BackendApp
+        Ref: Server
       Description: Backend application on AWS Beanstalk
       TemplateName:
         Ref: BackendConfigurationTemplate
       VersionLabel:
-        Ref: BackendAppVersion
+        Ref: ServerVersion
   MyInstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties: 
