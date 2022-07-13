@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { forgotPasswordSubmit } from "../../utils/cognitoAuth";
+import { Container } from '@mui/system'
+import {Button,CssBaseline,TextField,Paper,Link,Grid,Box,Typography,createTheme, ThemeProvider} from '@mui/material';
 
 export default function VerifyForgotPassword() {
     const [resetPasswordCode, setResetPasswordCode] = useState("");
@@ -16,30 +18,68 @@ export default function VerifyForgotPassword() {
             .then((res) => console.log(res))
             .catch((err) => console.log(err));
     }
+    // return (
+    //     <>
+    //         <h3>Verify Forgot Password</h3>
+    //         <form onSubmit={handleForgotPasswordSubmit}>
+    //             <input
+    //                 required
+    //                 placeholder="email"
+    //                 value={resetPasswordEmail}
+    //                 onChange={(e) => setResetPasswordEmail(e.target.value)}
+    //             />
+    //             <input
+    //                 required
+    //                 placeholder="code"
+    //                 value={resetPasswordCode}
+    //                 onChange={(e) => setResetPasswordCode(e.target.value)}
+    //             />
+    //             <input
+    //                 required
+    //                 placeholder="new password"
+    //                 value={resetNewPassword}
+    //                 onChange={(e) => setResetNewPassword(e.target.value)}
+    //             />
+    //             <button>Submit</button>
+    //         </form>
+    //     </>
+    // );
+
     return (
-        <>
-            <h3>Verify Forgot Password</h3>
-            <form onSubmit={handleForgotPasswordSubmit}>
-                <input
+        <Container maxWidth="xs">
+
+            <h2 textAlign='center'> Email Verfication with code </h2>
+
+            <Box component='form' onSubmit={handleForgotPasswordSubmit}>
+                <TextField margin="normal"
                     required
-                    placeholder="email"
-                    value={resetPasswordEmail}
+                    fullWidth
+                    type={"email"}
+                    label="Email Address"
+                    name="email"
+                    placeholder='test@gmail.com'
+                    value= {resetPasswordEmail}
                     onChange={(e) => setResetPasswordEmail(e.target.value)}
-                />
-                <input
+                    variant='outlined' color='secondary' />
+                <TextField
+                    margin="normal"
                     required
-                    placeholder="code"
+                    fullWidth
+                    placeholder='012345'
                     value={resetPasswordCode}
-                    onChange={(e) => setResetPasswordCode(e.target.value)}
-                />
-                <input
-                    required
-                    placeholder="new password"
-                    value={resetNewPassword}
-                    onChange={(e) => setResetNewPassword(e.target.value)}
-                />
-                <button>Submit</button>
-            </form>
-        </>
+                    onChange={(e) => setResetPasswordCode(e.target.value)} />
+                <TextField 
+                     margin="normal"
+                     required
+                     fullWidth
+                     type = "password"
+                     value={resetNewPassword}
+                     placeholder='password'
+                     onChange={(e) => setResetNewPassword(e.target.value)} />
+
+                <br />
+                <Button variant='contained' type='submit' color='primary' > Submit </Button>
+            </Box>
+        </Container>
     );
 }

@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Container } from '@mui/system'
+import {Button,CssBaseline,TextField,Paper,Link,Grid,Box,Typography,createTheme, ThemeProvider} from '@mui/material';
 import { changePassword } from "../../utils/cognitoAuth";
 
 export default function ChangePassword() {
@@ -15,24 +17,54 @@ export default function ChangePassword() {
                 console.log(err);
             });
     }
+    // return (
+    //     <>
+    //         <h3>Change password</h3>
+    //         <form onSubmit={handleChangePassword}>
+    //             <input
+    //                 required
+    //                 placeholder="old password"
+    //                 value={oldPassword}
+    //                 onChange={(e) => setOldPassword(e.target.value)}
+    //             />
+    //             <input
+    //                 required
+    //                 placeholder="new password"
+    //                 value={newPassword}
+    //                 onChange={(e) => setNewPassword(e.target.value)}
+    //             />
+    //             <button>Submit</button>
+    //         </form>
+    //     </>
+    // );
     return (
-        <>
-            <h3>Change password</h3>
-            <form onSubmit={handleChangePassword}>
-                <input
+        <Container maxWidth="xs">
+    
+          <h2 textAlign='center'> Forgot Password </h2>
+    
+          <Box component='form' onSubmit={handleChangePassword}>
+          <TextField
+                    margin="normal"
                     required
-                    placeholder="old password"
+                    fullWidth
+                    type="password"
+                    id="currentpassword"
                     value={oldPassword}
-                    onChange={(e) => setOldPassword(e.target.value)}
-                />
-                <input
+                    autoComplete="current password"
+                    onChange={(e) => setOldPassword(e.target.value)} />
+            <TextField
+                    margin="normal"
                     required
-                    placeholder="new password"
+                    fullWidth
+                    type="password"
+                    id="newpassword"
                     value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                />
-                <button>Submit</button>
-            </form>
-        </>
-    );
+                    autoComplete="New password"
+                    onChange={(e) => setNewPassword(e.target.value)} />
+            
+            <br />
+            <Button variant='contained' type='submit' color='primary' > Submit </Button>
+          </Box>
+        </Container>
+      );
 }

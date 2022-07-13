@@ -1,5 +1,5 @@
 import React from "react";
-
+import AppRoutes from "./Routes";
 import AuthHub from "./components/authHub";
 import GetUsers from "./components/getUsers";
 import "./App.css";
@@ -7,8 +7,9 @@ import "./App.css";
 function App() {
     return (
         <div className="App">
-            <AuthHub />
-            <GetUsers />
+            <AppRoutes />
+            {/* <AuthHub />
+            <GetUsers /> */}
         </div>
     );
 }
