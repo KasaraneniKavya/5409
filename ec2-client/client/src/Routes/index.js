@@ -4,6 +4,9 @@ import {
     ForgotPassword,
     GoogleSignIn,
     LogIn,
+    Profile,
+    Home,
+    History,
     Register,
     ResendVerificationCode,
     SignOut,
@@ -28,6 +31,9 @@ const AppRoutes= () => {
               <Route path="/forgotpasswordcode" element= {<VerifyForgotPassword />}/>
               <Route path="/googlesignin" element= {<GoogleSignIn />}/>
               <Route path="/resendcode" element= {<ResendVerificationCode />}/>
+              <Route path="/profile" element= {<Profile />}/>
+              <Route path="/home" element= {<Home />}/>
+              <Route path="/history" element= {<History />}/>
             </Routes>
         </div>
     </BrowserRouter>

@@ -2,6 +2,9 @@ import ChangePassword from "./changePassword";
 import ForgotPassword from "./forgotPassword";
 import GoogleSignIn from "./googleSignIn";
 import LogIn from "./logIn";
+import Profile from "./profile";
+import Home from "./home";
+import History from "./history";
 import Register from "./register";
 import ResendVerificationCode from "./resendVerificationCode";
 import SignOut from "./signOut";
@@ -18,4 +21,7 @@ export {
     SignOut,
     VerifyEmailWithCode,
     VerifyForgotPassword,
+    Profile,
+    Home,
+    History
 };
