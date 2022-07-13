@@ -1,10 +1,13 @@
 const { bucketName, region } = require("../data/s3Config");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
-const { S3Client, PutObjectCommand, ListObjectsV2Command, GetObjectCommand} = require("@aws-sdk/client-s3");
+const { S3Client, PutObjectCommand, ListObjectsV2Command, GetObjectCommand, DeleteObjectCommand} = require("@aws-sdk/client-s3");
 const { v4 } = require('uuid');
 
 //The following source was referenced to understand how use GetObjectCommand and PutObjectCommand 
 //https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/s3-example-photo-album-full.html
+
+//The following source was referenced to understand how use DeleteObjectCommand 
+//https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-mediastore-data/classes/deleteobjectcommand.html
 
 //The following source was referenced to understand how use ListObjectsV2Command 
 //https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-s3/classes/listobjectsv2command.html
@@ -14,7 +17,7 @@ const { v4 } = require('uuid');
 
 async function uploadImage(image, userid) {
     const uniqueKey = v4();
-    const fullKey = userid + "/" + uniqueKey + "-" + image.originalname;
+    const fullKey = userid + "/" + uniqueKey + "-" + image.originalname.split(/\s/).join("");
     const s3 = new S3Client({ region: region });
     const putObjectCommand = new PutObjectCommand({
         Bucket: bucketName,
@@ -27,6 +30,15 @@ async function uploadImage(image, userid) {
     });
     await s3.send(putObjectCommand);
     return fullKey.split("/")[1];
+}
+
+async function deleteImage(userId, id) {
+    const s3 = new S3Client({ region: region });
+    const deleteObjectCommand = new DeleteObjectCommand({
+        Bucket: bucketName,
+        Key: userId+"/"+id
+    });
+    await s3.send(deleteObjectCommand);
 }
 
 async function getImages(userid) {
@@ -58,4 +70,4 @@ async function getImages(userid) {
     return images;
 }
 
-module.exports = { uploadImage, getImages };
+module.exports = { uploadImage, getImages , deleteImage};

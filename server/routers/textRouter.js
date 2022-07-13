@@ -6,13 +6,11 @@ router.get("/:userid/:key", async (req, res) => {
     const key = req.params.key;
     try {
         const text = await getText(userId, key);
-        res.status(200).send({
-            text : text
-        });
+        res.status(200).send(text);
     } catch (err) {
         res.status(500).send({
-            message: "Error fetching text.",
-            error: err
+            message: "Could not get text.",
+            error: err.message
         });
     }
 });
@@ -27,7 +25,7 @@ router.post("/createtable/:userid/", async (req, res) => {
     } catch (err) {
         res.status(500).send({
             message: "Error creating table.",
-            error: err
+            error: err.message
         });
     }
 });

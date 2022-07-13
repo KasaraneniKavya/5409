@@ -50,7 +50,7 @@ async function getText(userid, key) {
             const response = await axios.get(url + "/text/" + userid + "/" + key);
             text = response.data.text;
         } catch (e) {
-            console.log("Text unavailable. Attempt: " + tries+1);
+            console.log("Text unavailable. Attempt: " + (tries+1));
             console.log(e);
         }
     }

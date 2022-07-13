@@ -5,6 +5,7 @@ const { getCognitoMiddleware } = require("./middleware/cognitoAuth");
 const usersRouter = require("./routers/usersRouter");
 const imageRouter = require("./routers/imageRouter");
 const textRouter = require("./routers/textRouter");
+const historyRouter = require("./routers/historyRouter");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use("/users", getCognitoMiddleware(), usersRouter);
 app.use("/images", imageRouter);
 app.use("/text", textRouter);
+app.use("/history", historyRouter);
 
 app.get("/", (req, res) => {
     res.send("<h1>Hello from the server!</h1>");

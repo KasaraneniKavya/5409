@@ -13,7 +13,7 @@ router.put("/upload/:userid", multer().array('image',1), async (req, res) => {
     } catch (err) {
         res.status(500).send({
             message: "Error uploading image.",
-            error: err
+            error: err.message
         });
     }
 });
@@ -28,7 +28,7 @@ router.get("/:userid", async (req, res) => {
     } catch (err) {
         res.status(500).send({
             message: "Error fetching images.",
-            error: err
+            error: err.message
         });
     }
 });
