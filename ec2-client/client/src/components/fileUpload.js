@@ -24,7 +24,7 @@ const FileUpload = () => {
     return  (
         <>
             <form onSubmit={submit}>
-            <input type="file" id="image" name="image" accept=".pdf, .jpg, .png, .tiff" onChange={handleChange}/><br/>
+            <input type="file" id="image" name="image" accept=".jpg, .png, .tiff" onChange={handleChange}/><br/>
             <input type="submit" id="submit" disabled={true}/>
             </form>
             <p/>

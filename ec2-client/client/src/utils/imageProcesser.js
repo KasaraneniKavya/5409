@@ -27,7 +27,6 @@ async function createTable(userid) {
 async function uploadToBucket(image, userid) {
     const form = new FormData();
     form.append("image", image, image.name);
-    console.log(image)
     try {
         const response = await axios.put(url + "/images/upload/" + userid, form, {
             headers: {
@@ -45,13 +44,13 @@ async function uploadToBucket(image, userid) {
 
 async function getText(userid, key) {
     var text = null;
-    for (let tries = 0; tries < 3 && !text; tries++) {
+    for (let tries = 0; tries < 5 && !text; tries++) {
         try {
             await new Promise(r => setTimeout(r, 2000));
             const response = await axios.get(url + "/text/" + userid + "/" + key);
             text = response.data.text;
         } catch (e) {
-            console.log("Could not get text. Attempt: " + tries)
+            console.log("Text unavailable. Attempt: " + (tries+1));
             console.log(e);
         }
     }

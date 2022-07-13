@@ -1,10 +1,16 @@
 const { DynamoDBClient, GetItemCommand, CreateTableCommand, ResourceInUseException} = require("@aws-sdk/client-dynamodb");
+const { DynamoDBDocumentClient, DeleteCommand } = require("@aws-sdk/lib-dynamodb")
 
-//References for using aws sdk for dynamoDB: https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-dynamodb/classes/getitemcommand.html
+//The following source was referenced to understand how use GetItemCommand 
+//https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-dynamodb/classes/getitemcommand.html
+
+//The following source was referenced to understand how use DynamoDBDocumentClient and DeleteCommand
+//https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.DeleteItem.html
+
+//The following source was referenced to understand how to create tables
 //https://docs.amazonaws.cn/en_us/amazondynamodb/latest/developerguide/example_dynamodb_CreateTable_section.html
+
 async function getText(tableName, key) {
-    console.log("key")
-    console.log(key)
     const db = new DynamoDBClient({region: 'us-east-1'});
     const getitemcommand = new GetItemCommand({
         TableName: tableName, 
@@ -13,8 +19,22 @@ async function getText(tableName, key) {
         }
     });
     const dbResponse = await db.send(getitemcommand);
-    var text = dbResponse.Item.text.S;
+    var text = {
+        text: dbResponse.Item.text.S,
+        id: dbResponse.Item.id.S
+    }
     return text;
+}
+
+async function deleteText(userId, id) {
+    const db = new DynamoDBClient({region: 'us-east-1'});
+    const doc = DynamoDBDocumentClient.from(db);
+    await doc.send(new DeleteCommand({
+        TableName: userId,
+        Key: {
+            id: id
+        }
+    }))
 }
 
 async function createTable(userid) {
@@ -52,4 +72,4 @@ async function createTable(userid) {
     }
 }
 
-module.exports = {getText, createTable};
+module.exports = {getText, deleteText, createTable};

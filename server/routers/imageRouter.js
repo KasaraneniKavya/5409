@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { uploadImage } = require("../models/imageModel");
+const { uploadImage, getImages } = require("../models/imageModel");
 const multer = require('multer');
 
 router.put("/upload/:userid", multer().array('image',1), async (req, res) => {
@@ -11,8 +11,25 @@ router.put("/upload/:userid", multer().array('image',1), async (req, res) => {
             "key" : key
         });
     } catch (err) {
-        console.log(err);
-        res.status(500).send("Error uploading image.");
+        res.status(500).send({
+            message: "Error uploading image.",
+            error: err.message
+        });
+    }
+});
+
+router.get("/:userid", async (req, res) => {
+    const userid = req.params.userid;
+    try {
+        const images = await getImages(userid);
+        res.status(200).send({
+            images : images
+        });
+    } catch (err) {
+        res.status(500).send({
+            message: "Error fetching images.",
+            error: err.message
+        });
     }
 });
 
