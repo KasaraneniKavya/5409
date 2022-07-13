@@ -5,13 +5,15 @@ router.get("/:userid/:key", async (req, res) => {
     const userId = req.params.userid;
     const key = req.params.key;
     try {
-        var text = await getText(userId, key);
+        const text = await getText(userId, key);
         res.status(200).send({
-            "text" : text
+            text : text
         });
     } catch (err) {
-        console.log(err);
-        res.status(500).send("Error fetching text.");
+        res.status(500).send({
+            message: "Error fetching text.",
+            error: err
+        });
     }
 });
 
@@ -19,10 +21,14 @@ router.post("/createtable/:userid/", async (req, res) => {
     const userId = req.params.userid;
     try {
         await createTable(userId);
-        res.status(200).send("table created");
+        res.status(200).send({
+            message: "table created"
+        });
     } catch (err) {
-        console.log(err);
-        res.status(500).send("Error fetching text.");
+        res.status(500).send({
+            message: "Error creating table.",
+            error: err
+        });
     }
 });
 
