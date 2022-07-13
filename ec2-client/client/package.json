@@ -8,6 +8,7 @@
     "@mui/material": "^5.9.0",
     "aws-amplify": "^4.3.26",
     "axios": "^0.27.2",
+    "form-data": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-profile-card": "^0.1.4",
