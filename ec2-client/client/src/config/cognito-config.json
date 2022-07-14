@@ -1,7 +1,7 @@
 {
-    "clientId": "486t9sqcskap4ndi9bi19685kq",
-    "userPoolUri": "group42-dal.auth.us-east-1.amazoncognito.com",
-    "userPool": "us-east-1_Pn7H1eFbi",
+    "clientId": "3qas67ou6vrlgv5n5421g3e752",
+    "userPoolUri": "group42-dal-cg.auth.us-east-1.amazoncognito.com",
+    "userPool": "us-east-1_UULC4gxy8",
     "region": "us-east-1",
     "callbackUri": "http://localhost:3000/",
     "signoutUri": "http://localhost:3000/",
