@@ -5,7 +5,6 @@ import {
     GoogleSignIn,
     LogIn,
     Profile,
-    Home,
     NavBar,
     History,
     Register,
@@ -77,7 +76,6 @@ const ProtectedRoutes = () => {
             <Route element={<WithNavbar />}>
                 <Route path="/changepassword" element={<ChangePassword />} />
                 <Route path="/profile" element={<Profile />} />
-                <Route path="/home" element={<Home />} />
                 <Route path="/history" element={<History />} />
                 <Route path="/uploadtest" element={<FileUpload />} />
                 <Route path="/admin" element={<div><AuthHub /><GetUsers /></div>} />

@@ -38,7 +38,7 @@ async function confirmSignUp(email, code) {
 }
 
 async function resendConfirmationCode(username) {
-    return await Auth.resendSignUp(username);
+    return await Auth.forgotPassword(username);
 }
 
 // pass in true to sign out from all devices

@@ -1,22 +1,26 @@
 import React, { useState } from "react";
 import { forgotPasswordSubmit } from "../../utils/cognitoAuth";
 import { Container } from '@mui/system'
-import {Button,CssBaseline,TextField,Paper,Link,Grid,Box,Typography,createTheme, ThemeProvider} from '@mui/material';
+import { Button, CssBaseline, TextField, Paper, Link, Grid, Box, Typography, createTheme, ThemeProvider } from '@mui/material';
+import { useNavigate } from "react-router-dom";
 
 export default function VerifyForgotPassword() {
+    const navigate = useNavigate();
     const [resetPasswordCode, setResetPasswordCode] = useState("");
     const [resetNewPassword, setResetNewPassword] = useState("");
     const [resetPasswordEmail, setResetPasswordEmail] = useState("");
 
     function handleForgotPasswordSubmit(e) {
         e.preventDefault();
+        if (e) {
+            console.log(e);
+        }
         forgotPasswordSubmit(
             resetPasswordEmail,
             resetPasswordCode,
             resetNewPassword
         )
-            .then((res) => console.log(res))
-            .catch((err) => console.log(err));
+        navigate("/");
     }
     // return (
     //     <>
@@ -58,9 +62,9 @@ export default function VerifyForgotPassword() {
                     label="Email Address"
                     name="email"
                     placeholder='test@gmail.com'
-                    value= {resetPasswordEmail}
+                    value={resetPasswordEmail}
                     onChange={(e) => setResetPasswordEmail(e.target.value)}
-                    variant='outlined' color='secondary' />
+                    variant='outlined' color='primary' />
                 <TextField
                     margin="normal"
                     required
@@ -68,16 +72,24 @@ export default function VerifyForgotPassword() {
                     placeholder='012345'
                     value={resetPasswordCode}
                     onChange={(e) => setResetPasswordCode(e.target.value)} />
-                <TextField 
-                     margin="normal"
-                     required
-                     fullWidth
-                     type = "password"
-                     value={resetNewPassword}
-                     placeholder='password'
-                     onChange={(e) => setResetNewPassword(e.target.value)} />
+                <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    type="password"
+                    value={resetNewPassword}
+                    placeholder='password'
+                    onChange={(e) => setResetNewPassword(e.target.value)} />
 
                 <br />
+                <Grid container>
+                    <Grid item xs={3}>
+                        <Link href="/resendcode" variant="body2">
+                            Resend Code?
+                        </Link>
+                    </Grid>
+                </Grid>
+
                 <Button variant='contained' type='submit' color='primary' > Submit </Button>
             </Box>
         </Container>
