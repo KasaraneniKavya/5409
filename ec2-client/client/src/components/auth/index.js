@@ -1,12 +1,15 @@
-import ChangePassword from "./ChangePassword";
-import ForgotPassword from "./ForgotPassword";
-import GoogleSignIn from "./GoogleSignIn";
+import ChangePassword from "./changePassword";
+import ForgotPassword from "./forgotPassword";
+import GoogleSignIn from "./googleSignIn";
 import LogIn from "./logIn";
-import Register from "./Register";
-import ResendVerificationCode from "./ResendVerificationCode";
-import SignOut from "./SignOut";
-import VerifyEmailWithCode from "./VerifyEmailWithCode";
-import VerifyForgotPassword from "./VerifyForgotPassword";
+import Profile from "./profile";
+import History from "./history";
+import NavBar from "./navbar";
+import Register from "./register";
+import ResendVerificationCode from "./resendVerificationCode";
+import SignOut from "./signOut";
+import VerifyEmailWithCode from "./verifyWithCode";
+import VerifyForgotPassword from "./verifyForgotPassword";
 
 export {
     ChangePassword,
@@ -18,4 +21,7 @@ export {
     SignOut,
     VerifyEmailWithCode,
     VerifyForgotPassword,
+    Profile,
+    History,
+    NavBar
 };

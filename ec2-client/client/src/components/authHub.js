@@ -44,41 +44,42 @@ export default function AuthHub() {
                 .then((userData) => setCurrentUser(userData))
                 .catch((err) => console.log(err));
         }, []);
-        return (
-            <div>
-                <h1>Group42-Dal</h1>
-                {!currentUser && (
-                    <>
-                        <h2>You are not signed in.</h2>
+        
+        // return (
+        //     <div>
+        //         <h1>Group42-Dal</h1>
+        //         {!currentUser && (
+        //             <>
+        //                 <h2>You are not signed in.</h2>
                         
-                        <LogIn />
-                        <GoogleSignIn />
-                        <Register />
+        //                 <LogIn />
+        //                 <GoogleSignIn />
+        //                 <Register />
 
                         
-                        <ForgotPassword />
-                        <VerifyForgotPassword />
-                    </>
-                )}
-                {currentUser && (
-                    <>
-                        <h2>Hello {currentUser["email"]}</h2>
-                        <SignOut />
-                    </>
-                )}
+        //                 <ForgotPassword />
+        //                 <VerifyForgotPassword />
+        //             </>
+        //         )}
+        //         {currentUser && (
+        //             <>
+        //                 <h2>Hello {currentUser["email"]}</h2>
+        //                 <SignOut />
+        //             </>
+        //         )}
     
-                {(!currentUser || !currentUser.email_verified) && (
-                    <>
-                        <VerifyEmailWithCode />
-                        <ResendVerificationCode />
-                    </>
-                )}
+        //         {(!currentUser || !currentUser.email_verified) && (
+        //             <>
+        //                 <VerifyEmailWithCode />
+        //                 <ResendVerificationCode />
+        //             </>
+        //         )}
     
-                {currentUser && !currentUser.identities && (
-                    <>
-                        <ChangePassword />
-                    </>
-                )}
-            </div>
-        );
+        //         {currentUser && !currentUser.identities && (
+        //             <>
+        //                 <ChangePassword />
+        //             </>
+        //         )}
+        //     </div>
+        // );
     }
