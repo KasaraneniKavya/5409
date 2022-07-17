@@ -14,7 +14,7 @@ Amplify.configure({
             redirectSignOut: cognitoConfig.signoutUri,
             responseType: "code",
         },
-    	// storage: CustomChromeStorage
+        // storage: CustomChromeStorage
     },
 });
 
@@ -27,7 +27,10 @@ async function signUp(email, password) {
 }
 
 async function signIn(email, password) {
-    return await Auth.signIn(email, password);
+    const response = await Auth.signIn(email, password);
+    const userEmail = response.signInUserSession.idToken.payload.email;
+    localStorage.setItem("USER_EMAIL", userEmail);
+    return response;
 }
 
 async function confirmSignUp(email, code) {
@@ -40,6 +43,7 @@ async function resendConfirmationCode(username) {
 
 // pass in true to sign out from all devices
 async function signOut(global = false) {
+    localStorage.clear();
     return await Auth.signOut({ global });
 }
 
@@ -90,6 +94,9 @@ function getCurrentUser() {
                 const idToken = data.getIdToken();
                 const user = idToken.payload;
                 resolve(user);
+
+                console.log("User", user);
+                // localStorage.setItem("USER_EMAIL", user.);
             })
             .catch(() => {
                 reject(Error("Not signed in."));

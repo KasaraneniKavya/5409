@@ -5,6 +5,7 @@ import LogIn from "./logIn";
 import Profile from "./profile";
 import Home from "./home";
 import History from "./history";
+import NavBar from "./navbar";
 import Register from "./register";
 import ResendVerificationCode from "./resendVerificationCode";
 import SignOut from "./signOut";
@@ -23,5 +24,6 @@ export {
     VerifyForgotPassword,
     Profile,
     Home,
-    History
+    History,
+    NavBar
 };

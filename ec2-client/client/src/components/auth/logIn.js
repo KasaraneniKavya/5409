@@ -1,16 +1,22 @@
 import React, { useState } from "react";
 import { signIn } from "../../utils/cognitoAuth";
+import { useNavigate } from "react-router-dom";
 import { Button, CssBaseline, TextField, Paper, Link, Grid, Box, Typography, createTheme, ThemeProvider } from '@mui/material';
 
 const theme = createTheme();
 
 export default function LogIn() {
+  const navigate = useNavigate();
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
   function handleLogin(e) {
     e.preventDefault();
-    signIn(loginEmail, loginPassword).catch(() => { });
+    if (e) {
+      console.log(e);
+    }
+    signIn(loginEmail, loginPassword);
+    navigate("/uploadtest");
   }
   // return (
   //     <>

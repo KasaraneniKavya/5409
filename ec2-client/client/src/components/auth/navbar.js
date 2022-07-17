@@ -1,5 +1,5 @@
 import * as React from "react";
-import {AppBar, Avatar} from "@mui/material";
+import { AppBar, Avatar } from "@mui/material";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -19,7 +19,8 @@ export default function NavBar() {
     navigate('/profile');
   }
   const changeRoute1 = () => {
-    navigate('/signout');
+    localStorage.clear();
+    navigate('/');
   }
 
   const handleMenu = (event) => {
@@ -35,7 +36,7 @@ export default function NavBar() {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-           Textract
+            Textract
           </Typography>
 
           <div>
@@ -47,7 +48,7 @@ export default function NavBar() {
               onClick={handleMenu}
               color="inherit"
             >
-              <Avatar/>
+              <Avatar />
             </IconButton>
             <Menu
               id="menu-appbar"
