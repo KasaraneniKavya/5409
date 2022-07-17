@@ -19,9 +19,9 @@ app.use("/text", textRouter);
 app.use("/history", historyRouter);
 
 app.get("/", (req, res) => {
-    res.send("<h1>Hello from the server!</h1>");
+  res.send("<h1>Group42's Server</h1>");
 });
 
 app.listen(PORT, () => {
-    console.log(`app listening on port ${PORT}`);
+  console.log(`app listening on port ${PORT}`);
 });
