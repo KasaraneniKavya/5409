@@ -20,9 +20,12 @@ const Profile = () => {
   const changeRoute = () => {
     navigate('/history');
   }
+  const changeRoute1 = () => {
+    navigate('/changepassword');
+  }
   return (
 
-    <Paper elevation={11} style={{ margin: '100px auto', width: 600, height: 350, padding: '60px 60px' }}>
+    <Paper elevation={11} style={{ margin: '100px auto', width: 650, height: 350, padding: '60px 60px' }}>
       {/* <div style={{align:'left'}}>  */}
       <Stack direction='row' spacing={5} position='relative'>
         <ProfileUi color='primary'
@@ -31,6 +34,8 @@ const Profile = () => {
         />
         <div>
           <h2 >User Details</h2>
+          <br />
+          <br />
           <Typography variant='body'>
 
             <TableBody >
@@ -38,11 +43,18 @@ const Profile = () => {
                 <Label>Email</Label>
                 <LabelValue >{userEmail}</LabelValue>
               </TableRow>
+              <TableRow >
+                <Label>Password</Label>
+                <LabelValue >*******</LabelValue>
+              </TableRow>
             </TableBody>
 
           </Typography>
           <br /> <br />
-          <Button variant='outlined' type="submit" color='secondary' onClick={changeRoute}>History </Button>
+          <Stack direction="row" spacing={8}>
+            <Button variant='outlined' type="submit" color='primary' onClick={changeRoute}>History </Button>
+            <Button variant='outlined' type="submit" color='primary' onClick={changeRoute1}>Edit Profile </Button>
+          </Stack>
         </div>
       </Stack>
       {/* </div> */}

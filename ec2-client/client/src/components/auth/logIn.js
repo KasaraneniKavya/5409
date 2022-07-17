@@ -52,7 +52,7 @@ export default function LogIn() {
             // backgroundPosition: 'center',
           }}
         />
-        <Grid item md={5} xs={12} >
+        <Grid item md={5}>
           <Box
             sx={{
               mx: 4, my: 8, alignItems: 'center', display: 'flex', flexDirection: 'column',
@@ -91,14 +91,14 @@ export default function LogIn() {
               >
                 Sign In
               </Button>
-              <Grid container >
+              <Grid container>
                 <Grid item xs>
                   <Link href="/forgotpassword" variant="body2">
                     Forgot password?
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href='/register' variant="body2">
+                  <Link href="/register" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
