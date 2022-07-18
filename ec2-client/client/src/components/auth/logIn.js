@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { signIn } from "../../utils/cognitoAuth";
 import { useNavigate } from "react-router-dom";
-import { Button, CssBaseline, TextField, Paper, Link, Grid, Box, Typography, createTheme, ThemeProvider } from '@mui/material';
+import { Button, Snackbar, Alert, CssBaseline, TextField, Paper, Link, Grid, Box, Typography, createTheme, ThemeProvider } from '@mui/material';
 
 const theme = createTheme();
 
@@ -17,6 +17,7 @@ export default function LogIn() {
     }
     signIn(loginEmail, loginPassword);
     navigate("/uploadtest");
+
   }
   // return (
   //     <>
