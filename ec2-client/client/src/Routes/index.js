@@ -48,7 +48,7 @@ const AppRoutes = () => {
         <BrowserRouter>
             <Routes>
                 <Route element={<WithoutNavbar />}>
-                    <Route path="/" element={<LogIn />} />
+                    <Route path="/login" element={<LogIn />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/forgotpassword" element={<ForgotPassword />} />
                     <Route path="/verifyemail" element={<VerifyEmailWithCode />} />
@@ -77,7 +77,7 @@ const ProtectedRoutes = () => {
                 <Route path="/changepassword" element={<ChangePassword />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/history" element={<History />} />
-                <Route path="/uploadtest" element={<FileUpload />} />
+                <Route path="/" element={<FileUpload />} />
                 <Route path="/admin" element={<div><AuthHub /><GetUsers /></div>} />
             </Route>
         </Routes>
@@ -88,7 +88,7 @@ const RequireAuth = ({ children }) => {
     const userEmail = localStorage.getItem("USER_EMAIL");
     console.log(userEmail);
     if (!userEmail) {
-        return <Navigate to="/" replace />;
+        return <Navigate to="/login" replace />;
     }
     return children;
 };

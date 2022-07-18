@@ -20,7 +20,7 @@ export default function NavBar() {
   }
   const changeRoute1 = () => {
     localStorage.clear();
-    navigate('/');
+    navigate('/login');
   }
 
   const handleMenu = (event) => {

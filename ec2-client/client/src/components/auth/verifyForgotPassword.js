@@ -20,7 +20,7 @@ export default function VerifyForgotPassword() {
             resetPasswordCode,
             resetNewPassword
         )
-        navigate("/");
+        navigate("/login");
     }
     // return (
     //     <>

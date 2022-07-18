@@ -16,7 +16,7 @@ export default function Register() {
       console.log(e);
     }
     signUp(registerEmail, registerPassword);
-    navigate("/")
+    navigate("/login")
       ;
   }
   // return (
@@ -111,7 +111,7 @@ export default function Register() {
             </Button>
             <Grid container justifyContent="center">
               <Grid item>
-                <Link href="/" variant="body2">
+                <Link href="/login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
