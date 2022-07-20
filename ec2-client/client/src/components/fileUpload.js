@@ -8,6 +8,7 @@ const FileUpload = () => {
 
     const [image, setImage] = useState();
     const [text, setText] = useState("");
+    const [disabled, setDisabled] = useState(true);
 
     const submit = async (e) => {
         e.preventDefault();
@@ -16,10 +17,11 @@ const FileUpload = () => {
     }
 
     const handleChange = (e) => {
+        console.log(e.target.files)
         if (e.target.files[0]) {
-            document.getElementById("submit").disabled = false;
+            setDisabled(false);
         } else {
-            document.getElementById("submit").disabled = true;
+            setDisabled(true);
         }
         setImage(e.target.files[0]);
     }
@@ -53,24 +55,25 @@ const FileUpload = () => {
                             component="span" >
                             Upload Image
                         </Button>
+                        <br/>
+                        {image?.name}
                     </label>
 
                     <br /> <br />
-                    <Button variant='contained' type='submit' color='primary' > Submit </Button>
-
+                    <Button id="submit" variant='contained' type='submit' color='primary' disabled={disabled}> Submit </Button>
                     <br />
+                    {/*
                     <TextField margin="normal"
 
                         fullWidth
                         type="text"
                         label="Output Text"
                         name="text"
-                        placeholder='Your Text'
-
                         variant='outlined' color='primary' />
+                    */}
 
+                    {text}
                     <br />
-
                 </Box>
             </Container>
         </>

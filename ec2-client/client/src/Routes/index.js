@@ -6,7 +6,6 @@ import {
     LogIn,
     Profile,
     NavBar,
-    History,
     Register,
     ResendVerificationCode,
     SignOut,
@@ -16,6 +15,7 @@ import {
 import FileUpload from "../components/fileUpload";
 import AuthHub from "../components/authHub";
 import GetUsers from "../components/getUsers";
+import History from "../components/history";
 
 
 
@@ -56,6 +56,8 @@ const AppRoutes = () => {
                     <Route path="/googlesignin" element={<GoogleSignIn />} />
                     <Route path="/resendcode" element={<ResendVerificationCode />} />
                     <Route path="/signout" element={<SignOut />} />
+                    <Route path="/history" element={<History />} />
+                <Route path="/" element={<FileUpload />} />
                 </Route>
                 <Route
                     path="*"
@@ -76,8 +78,7 @@ const ProtectedRoutes = () => {
             <Route element={<WithNavbar />}>
                 <Route path="/changepassword" element={<ChangePassword />} />
                 <Route path="/profile" element={<Profile />} />
-                <Route path="/history" element={<History />} />
-                <Route path="/" element={<FileUpload />} />
+
                 <Route path="/admin" element={<div><AuthHub /><GetUsers /></div>} />
             </Route>
         </Routes>
