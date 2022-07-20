@@ -1,6 +1,6 @@
 import axios from "axios";
 const FormData = require("form-data");
-const url = "http://group42-dal-eb.us-east-1.elasticbeanstalk.com";
+const {url} = require("./../config/server-config.json");
 
 export async function processImage(image) {
   const userid = "lisenor"; // need to get the active users id

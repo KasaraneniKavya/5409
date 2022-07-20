@@ -1,4 +1,7 @@
 import * as React from "react";
+import axios from "axios";
+import { Button} from "@mui/material";
+import './history.css'
 import {
   styled,
   TableCell,
@@ -11,8 +14,6 @@ import {
   Paper,
   Grid
 } from "@mui/material";
-import { Container } from "@mui/system";
-
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "blue",
@@ -23,28 +24,48 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   }
 }));
 
+const {url} = require("./../config/server-config.json");
+const userId = "lisenor"//CHANGE
 export default function History() {
+  const [images, setImages] = React.useState();
+
+  const getImages = async() => {
+    try {
+      let response = await axios.get(url+"/images/"+userId);
+      let sortedImages = response.data.images;
+      sortedImages.sort((a,b) => (new Date(a.date) < new Date(b.date)?1:-1));
+      setImages(sortedImages);
+    } catch (e) {
+      console.log(e);
+    }   
+  }
+
+  const downloadDocument = async(image) => {
+    console.log(image.id)
+    try {
+      let response = await axios.get(url + "/text/" + userId + "/" + image.id);
+      let text = response.data.text;
+      console.log(text);
+    } catch (e) {
+      console.log(e);
+    }
+  } 
+
+  const deleteDocument = async(image) => {
+    try {
+      await axios.delete(url + "/history/" + userId + "/" + image.id);
+      getImages();
+    } catch (e) {
+      console.log(e);
+    }
+  } 
+
+  React.useEffect(()=> {
+    getImages();
+  },[]);
+  
   return (
-    // <Container maxWidth="sm">
-    //   <Paper elevation={7}>
-    //     <TableContainer component={Paper}>
-    //       <Table sx={{ minWidth: 400 }} aria-label="customized table">
-    //         <TableHead>
-    //           <TableRow>
-    //             <StyledTableCell align="center">Name</StyledTableCell>
-    //             <StyledTableCell align="center">Files</StyledTableCell>
-    //           </TableRow>
-    //         </TableHead>
-    //         <TableBody>
-    //           <TableRow>
-    //             <StyledTableCell align="center">Kavya</StyledTableCell>
-    //             <StyledTableCell align="center">Files</StyledTableCell>
-    //           </TableRow>
-    //         </TableBody>
-    //       </Table>
-    //     </TableContainer>
-    //   </Paper>
-    // </Container>
+
     <Grid
       container
       spacing={0}
@@ -61,22 +82,29 @@ export default function History() {
               <TableRow>
                 <StyledTableCell align="center">Date</StyledTableCell>
                 <StyledTableCell align="center">File Name</StyledTableCell>
-                <StyledTableCell align="center">Image URL</StyledTableCell>
+                <StyledTableCell align="center">Image</StyledTableCell>
                 <StyledTableCell align="center">Text Extracted File</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow>
-                <StyledTableCell align="center">29-01-1999</StyledTableCell>
-                <StyledTableCell align="center">Name</StyledTableCell>
-                <StyledTableCell align="center">URL</StyledTableCell>
-                <StyledTableCell align="center">File</StyledTableCell>
-              </TableRow>
+            {images?.map((image) => {   
+              let date = new Date(image.date);
+              let dateConverted = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate();
+              return ( 
+                <TableRow>
+                  <StyledTableCell align="center">{dateConverted}</StyledTableCell>
+                  <StyledTableCell align="center">{image.fileName}</StyledTableCell>
+                  <StyledTableCell align="center"><a href={image.url} target="_blank"><img src={image.url}/></a></StyledTableCell>
+                  <StyledTableCell align="center">
+                  <Button id="download" variant='contained' color='primary' fullWidth onClick={()=>downloadDocument(image)}> Download </Button><br/><br/>
+                  <Button id="delete" variant='contained' color='secondary' fullWidth onClick={()=>deleteDocument(image)}> Delete </Button>
+                  </StyledTableCell>
+                </TableRow>)
+              })}
             </TableBody>
           </Table>
         </TableContainer>
       </Grid>
-
     </Grid>
   );
 }
