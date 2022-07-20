@@ -30,6 +30,7 @@ Resources:
     Type: "AWS::Lambda::Permission"
   textExtraction: 
     Properties: 
+      Timeout: 60
       Code: 
         ZipFile: |
             import json
