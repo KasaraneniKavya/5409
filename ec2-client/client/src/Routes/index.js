@@ -56,8 +56,6 @@ const AppRoutes = () => {
                     <Route path="/googlesignin" element={<GoogleSignIn />} />
                     <Route path="/resendcode" element={<ResendVerificationCode />} />
                     <Route path="/signout" element={<SignOut />} />
-                    <Route path="/history" element={<History />} />
-                <Route path="/" element={<FileUpload />} />
                 </Route>
                 <Route
                     path="*"
@@ -78,7 +76,8 @@ const ProtectedRoutes = () => {
             <Route element={<WithNavbar />}>
                 <Route path="/changepassword" element={<ChangePassword />} />
                 <Route path="/profile" element={<Profile />} />
-
+                <Route path="/history" element={<History />} />
+                <Route path="/" element={<FileUpload />} />
                 <Route path="/admin" element={<div><AuthHub /><GetUsers /></div>} />
             </Route>
         </Routes>
