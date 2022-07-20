@@ -1,45 +1,97 @@
 import React, { useState } from "react";
 import { forgotPasswordSubmit } from "../../utils/cognitoAuth";
+import { Container } from '@mui/system'
+import { Button, CssBaseline, TextField, Paper, Link, Grid, Box, Typography, createTheme, ThemeProvider } from '@mui/material';
+import { useNavigate } from "react-router-dom";
 
 export default function VerifyForgotPassword() {
+    const navigate = useNavigate();
     const [resetPasswordCode, setResetPasswordCode] = useState("");
     const [resetNewPassword, setResetNewPassword] = useState("");
     const [resetPasswordEmail, setResetPasswordEmail] = useState("");
 
     function handleForgotPasswordSubmit(e) {
         e.preventDefault();
+        if (e) {
+            console.log(e);
+        }
         forgotPasswordSubmit(
             resetPasswordEmail,
             resetPasswordCode,
             resetNewPassword
         )
-            .then((res) => console.log(res))
-            .catch((err) => console.log(err));
+        navigate("/login");
     }
+    // return (
+    //     <>
+    //         <h3>Verify Forgot Password</h3>
+    //         <form onSubmit={handleForgotPasswordSubmit}>
+    //             <input
+    //                 required
+    //                 placeholder="email"
+    //                 value={resetPasswordEmail}
+    //                 onChange={(e) => setResetPasswordEmail(e.target.value)}
+    //             />
+    //             <input
+    //                 required
+    //                 placeholder="code"
+    //                 value={resetPasswordCode}
+    //                 onChange={(e) => setResetPasswordCode(e.target.value)}
+    //             />
+    //             <input
+    //                 required
+    //                 placeholder="new password"
+    //                 value={resetNewPassword}
+    //                 onChange={(e) => setResetNewPassword(e.target.value)}
+    //             />
+    //             <button>Submit</button>
+    //         </form>
+    //     </>
+    // );
+
     return (
-        <>
-            <h3>Verify Forgot Password</h3>
-            <form onSubmit={handleForgotPasswordSubmit}>
-                <input
+        <Container maxWidth="xs">
+
+            <h2 textAlign='center'> Email Verfication with code </h2>
+
+            <Box component='form' onSubmit={handleForgotPasswordSubmit}>
+                <TextField margin="normal"
                     required
-                    placeholder="email"
+                    fullWidth
+                    type={"email"}
+                    label="Email Address"
+                    name="email"
+                    placeholder='test@gmail.com'
                     value={resetPasswordEmail}
                     onChange={(e) => setResetPasswordEmail(e.target.value)}
-                />
-                <input
+                    variant='outlined' color='primary' />
+                <TextField
+                    margin="normal"
                     required
-                    placeholder="code"
+                    fullWidth
+                    placeholder='012345'
                     value={resetPasswordCode}
-                    onChange={(e) => setResetPasswordCode(e.target.value)}
-                />
-                <input
+                    onChange={(e) => setResetPasswordCode(e.target.value)} />
+                <TextField
+                    margin="normal"
                     required
-                    placeholder="new password"
+                    fullWidth
+                    type="password"
                     value={resetNewPassword}
-                    onChange={(e) => setResetNewPassword(e.target.value)}
-                />
-                <button>Submit</button>
-            </form>
-        </>
+                    placeholder='password'
+                    onChange={(e) => setResetNewPassword(e.target.value)} />
+
+                <br />
+                <Grid container>
+                    <Grid item xs={3}>
+                        <Link href="/resendcode" variant="body2">
+                            Resend Code?
+                        </Link>
+                    </Grid>
+                </Grid>
+
+                <Button variant='contained' type='submit' color='primary' > Submit </Button>
+            </Box>
+        </Container>
     );
 }
