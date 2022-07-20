@@ -6,7 +6,6 @@ import {
     LogIn,
     Profile,
     NavBar,
-    History,
     Register,
     ResendVerificationCode,
     SignOut,
@@ -16,6 +15,7 @@ import {
 import FileUpload from "../components/fileUpload";
 import AuthHub from "../components/authHub";
 import GetUsers from "../components/getUsers";
+import History from "../components/history";
 
 
 

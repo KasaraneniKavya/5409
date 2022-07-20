@@ -3,7 +3,6 @@ import ForgotPassword from "./forgotPassword";
 import GoogleSignIn from "./googleSignIn";
 import LogIn from "./logIn";
 import Profile from "./profile";
-import History from "./history";
 import NavBar from "./navbar";
 import Register from "./register";
 import ResendVerificationCode from "./resendVerificationCode";
@@ -22,6 +21,5 @@ export {
     VerifyEmailWithCode,
     VerifyForgotPassword,
     Profile,
-    History,
     NavBar
 };
