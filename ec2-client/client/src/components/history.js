@@ -25,7 +25,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const {url} = require("./../config/server-config.json");
-const userId = "lisenor"//CHANGE
+const userId = localStorage.getItem("USER_EMAIL");
 export default function History() {
   const [images, setImages] = React.useState();
 

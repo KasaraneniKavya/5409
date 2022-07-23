@@ -3,7 +3,7 @@ const FormData = require("form-data");
 const {url} = require("./../config/server-config.json");
 
 export async function processImage(image) {
-  const userid = "lisenor"; // need to get the active users id
+  const userid = localStorage.getItem("USER_EMAIL");
   try {
     await createTable(userid);
     const key = await uploadToBucket(image, userid);
