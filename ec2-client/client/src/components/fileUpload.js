@@ -5,15 +5,18 @@ import { processImage } from "../utils/imageProcesser";
 import NavBar from "./auth/navbar"
 
 const FileUpload = () => {
-
+    const {url} = require("./../config/server-config.json");
+    const userId = localStorage.getItem("USER_EMAIL");
     const [image, setImage] = useState();
     const [text, setText] = useState("");
+    const [textId, setTextId] = useState("");
     const [disabled, setDisabled] = useState(true);
 
     const submit = async (e) => {
         e.preventDefault();
         var result = await processImage(image);
-        setText(result);
+        setText(result.text);
+        setTextId(result.id);
     }
 
     const handleChange = (e) => {
@@ -27,17 +30,8 @@ const FileUpload = () => {
     }
 
     return (
-        // <>
-        //     <form onSubmit={submit}>
-        //     <input type="file" id="image" name="image" accept=".jpg, .png, .tiff" onChange={handleChange}/><br/>
-        //     <input type="submit" id="submit" disabled={true}/>
-        //     </form>
-        //     <p/>
-        //     <div>{text}</div>
-        // </>
         <>
             <Container maxWidth="xs">
-
 
                 <Box component='form' onSubmit={submit} marginTop='20px'>
 
@@ -73,7 +67,13 @@ const FileUpload = () => {
                     */}
 
                     {text}
-                    <br />
+                    <br/>
+                    {(text !== "")?(
+                        <>
+                        <Button id="download" variant='contained' color='primary' onClick={()=>{window.location.replace(url + "/text/download/" + userId + "/" + textId)}}> Download </Button><br/><br/>
+                        </>
+                    ):null}
+                    
                 </Box>
             </Container>
         </>
