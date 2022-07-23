@@ -25,7 +25,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const {url} = require("./../config/server-config.json");
-const userId = localStorage.getItem("USER_EMAIL");
+const userId = localStorage.getItem("USER_EMAIL").split('@').join("");
 export default function History() {
   const [images, setImages] = React.useState();
 
