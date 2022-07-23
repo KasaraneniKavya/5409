@@ -6,7 +6,6 @@ import NavBar from "./auth/navbar"
 
 const FileUpload = () => {
     const {url} = require("./../config/server-config.json");
-    const userId = localStorage.getItem("USER_EMAIL");
     const [image, setImage] = useState();
     const [text, setText] = useState("");
     const [textId, setTextId] = useState("");
@@ -70,7 +69,7 @@ const FileUpload = () => {
                     <br/>
                     {(text !== "")?(
                         <>
-                        <Button id="download" variant='contained' color='primary' onClick={()=>{window.location.replace(url + "/text/download/" + userId + "/" + textId)}}> Download </Button><br/><br/>
+                        <Button id="download" variant='contained' color='primary' onClick={()=>{window.location.replace(url + "/text/download/" + localStorage.getItem("USER_EMAIL").split('@').join("") + "/" + textId)}}> Download </Button><br/><br/>
                         </>
                     ):null}
                     
