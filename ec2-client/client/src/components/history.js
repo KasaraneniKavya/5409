@@ -25,7 +25,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const {url} = require("./../config/server-config.json");
-const userId = "lisenor"//CHANGE
+const userId = localStorage.getItem("USER_EMAIL");
 export default function History() {
   const [images, setImages] = React.useState();
 
@@ -39,17 +39,6 @@ export default function History() {
       console.log(e);
     }   
   }
-
-  const downloadDocument = async(image) => {
-    console.log(image.id)
-    try {
-      let response = await axios.get(url + "/text/" + userId + "/" + image.id);
-      let text = response.data.text;
-      console.log(text);
-    } catch (e) {
-      console.log(e);
-    }
-  } 
 
   const deleteDocument = async(image) => {
     try {
@@ -96,7 +85,7 @@ export default function History() {
                   <StyledTableCell align="center">{image.fileName}</StyledTableCell>
                   <StyledTableCell align="center"><a href={image.url} target="_blank"><img src={image.url}/></a></StyledTableCell>
                   <StyledTableCell align="center">
-                  <Button id="download" variant='contained' color='primary' fullWidth onClick={()=>downloadDocument(image)}> Download </Button><br/><br/>
+                  <Button id="download" variant='contained' color='primary' fullWidth onClick={()=>{window.location.replace(url + "/text/download/" + userId + "/" + image.id)}}> Download </Button><br/><br/>
                   <Button id="delete" variant='contained' color='secondary' fullWidth onClick={()=>deleteDocument(image)}> Delete </Button>
                   </StyledTableCell>
                 </TableRow>)

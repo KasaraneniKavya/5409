@@ -3,7 +3,8 @@ const FormData = require("form-data");
 const {url} = require("./../config/server-config.json");
 
 export async function processImage(image) {
-  const userid = "lisenor"; // need to get the active users id
+  const userid = localStorage.getItem("USER_EMAIL");
+  console.log(userid)
   try {
     await createTable(userid);
     const key = await uploadToBucket(image, userid);
@@ -48,7 +49,7 @@ async function getText(userid, key) {
     try {
       await new Promise((r) => setTimeout(r, 2000));
       const response = await axios.get(url + "/text/" + userid + "/" + key);
-      text = response.data.text;
+      text = response.data;
     } catch (e) {
       console.log("Text unavailable. Attempt: " + (tries + 1));
       console.log(e);
