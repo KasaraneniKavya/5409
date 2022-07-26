@@ -1,10 +1,11 @@
 import axios from "axios";
 const FormData = require("form-data");
-const {url} = require("./../config/server-config.json");
+const { url } = require("./../config/server-config.json");
 
 export async function processImage(image) {
-  const userid = localStorage.getItem("USER_EMAIL").split('@').join("");
-  console.log(userid)
+  const userIdEmail = localStorage.getItem("USER_EMAIL");
+  const userid = userIdEmail.split("@").join("");
+  console.log(userid);
   try {
     await createTable(userid);
     const key = await uploadToBucket(image, userid);
