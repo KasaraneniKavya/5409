@@ -1,0 +1,250 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Group 42 - Cloud Formation Template
+Parameters:
+  KeyName:
+    Description: Key Pair for EC2
+    Type: 'AWS::EC2::KeyPair::KeyName'
+
+Resources:
+  G42VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: VPC for Group42 Instances
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+
+  VPCGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref G42VPC
+      InternetGatewayId: !Ref InternetGateway
+
+  PublicSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: us-east-1a
+      VpcId: !Ref G42VPC
+      CidrBlock: 10.0.1.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: Public Subnet A 
+
+  PublicSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: us-east-1b
+      VpcId: !Ref G42VPC
+      CidrBlock: 10.0.2.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: Public Subnet B
+
+  RouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref G42VPC
+      Tags:
+        - Key: Name
+          Value: Route Table for G42
+
+  InternetRoute:
+    Type: AWS::EC2::Route
+    DependsOn: VPCGatewayAttachment
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+      RouteTableId: !Ref RouteTable
+
+  SubnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref RouteTable
+      SubnetId: !Ref PublicSubnetA
+
+  EC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: "g42-security-group"
+      GroupDescription: "Security Group for G42 Instances"
+      VpcId: !Ref G42VPC
+      SecurityGroupIngress:
+
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: 0.0.0.0/0
+
+      - IpProtocol: tcp
+        FromPort: 22
+        ToPort: 22
+        CidrIp: 0.0.0.0/0
+
+      - IpProtocol: tcp
+        FromPort: 5000
+        ToPort: 5000
+        CidrIp: 0.0.0.0/0
+      Tags : [
+            {"Key" : "Name", "Value" : "group42-dal-sg-cf"}]
+
+  EC2Instance1:
+    Type: AWS::EC2::Instance
+    Properties:
+      SubnetId: !Ref PublicSubnetA
+      AvailabilityZone: us-east-1a
+      ImageId: ami-0022f774911c1d690 
+      InstanceType: t2.micro
+      SecurityGroupIds:
+        - !Ref EC2SecurityGroup
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            VolumeSize: 8
+      KeyName: !Ref KeyName
+      UserData: 
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          sudo yum update -y
+          sudo yum install git -y
+          mkdir /home/ec2-user/cloud
+          cd /home/ec2-user/cloud
+          git clone https://callmehetch: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@github.com/callmehetch/group42-dal-client.git
+          cd /home/ec2-user/cloud/group42-dal-client
+          yum install -y gcc-c++ make
+          yum install curl -y
+          curl -sL https://rpm.nodesource.com/setup_16.x | sudo -E bash -
+          sudo yum install -y nodejs
+          sudo yum install npm
+          sudo npm i
+          screen
+          sudo npm start --host=0.0.0.0 --port=80
+      Tags : [
+            {"Key" : "Name", "Value" : "group42-dal-ec2-cf-a"}]
+
+  EC2Instance2:
+    Type: AWS::EC2::Instance
+    Properties:
+      SubnetId: !Ref PublicSubnetB
+      AvailabilityZone: us-east-1b
+      ImageId: ami-0022f774911c1d690 
+      InstanceType: t2.micro
+      SecurityGroupIds:
+        - !Ref EC2SecurityGroup
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            VolumeSize: 8
+      KeyName: !Ref KeyName
+      UserData: 
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          sudo yum update -y
+          sudo yum install git -y
+          mkdir /home/ec2-user/cloud
+          cd /home/ec2-user/cloud
+          git clone https://callmehetch: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@github.com/callmehetch/group42-dal-client.git
+          cd /home/ec2-user/cloud/group42-dal-client
+          yum install -y gcc-c++ make
+          yum install curl -y
+          curl -sL https://rpm.nodesource.com/setup_16.x | sudo -E bash -
+          sudo yum install -y nodejs
+          sudo yum install npm
+          sudo npm i
+          screen
+          sudo npm start --host=0.0.0.0 --port=80
+      Tags : [
+            {"Key" : "Name", "Value" : "group42-dal-ec2-cf-b"}]
+          
+  # G42AutoScalingGroupConfiguration:
+  #   Type: AWS::AutoScaling::LaunchConfiguration
+  #   Properties:
+  #     AssociatePublicIpAddress: false
+  #     ImageId: ami-0022f774911c1d690 
+  #     InstanceType: t2.micro
+  #     SecurityGroups: [ !Ref EC2SecurityGroup ]
+  #     KeyName: !Ref KeyName
+  #     UserData: 
+  #       Fn::Base64: !Sub |
+  #         #!/bin/bash
+  #         sudo yum update -y
+  #         sudo yum install git -y
+  #         mkdir /home/ec2-user/cloud
+  #         cd /home/ec2-user/cloud
+  #         git clone https://callmehetch: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@github.com/callmehetch/group42-dal-client.git
+  #         cd /home/ec2-user/cloud/group42-dal-client
+  #         yum install -y gcc-c++ make
+  #         yum install curl -y
+  #         curl -sL https://rpm.nodesource.com/setup_16.x | sudo -E bash -
+  #         sudo yum install -y nodejs
+  #         sudo yum install npm
+  #         sudo npm i
+  #         screen
+  #         sudo npm start --host=0.0.0.0 --port=80
+
+  # G42AutoScalingGroup:
+  #   Type: AWS::AutoScaling::AutoScalingGroup
+  #   Properties: 
+  #     AutoScalingGroupName: g42-autoscaling-group-cf-2
+  #     AvailabilityZones: [us-east-1b, us-east-1a]
+  #     DesiredCapacity: 2
+  #     LaunchConfigurationName: !Ref G42AutoScalingGroupConfiguration
+  #     MaxSize: 3
+  #     MinSize: 2
+
+
+  # Security Group
+  ELBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      VpcId: !Ref G42VPC
+      GroupDescription: ELB Security Group
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: 0.0.0.0/0
+
+  # Load Balancer
+  LoadBalancerforEC2:
+    Type: AWS::ElasticLoadBalancing::LoadBalancer
+    Properties:
+      Instances:
+      - !Ref EC2Instance1
+      - !Ref EC2Instance2
+      Listeners:
+      - LoadBalancerPort: '80'
+        InstancePort: '80'
+        Protocol: HTTP
+      HealthCheck:
+        Target: HTTP:80/
+        HealthyThreshold: '3'
+        UnhealthyThreshold: '5'
+        Interval: '30'
+        Timeout: '5'
+      SecurityGroups:
+        - !GetAtt ELBSecurityGroup.GroupId
+      Subnets: 
+        - !Ref PublicSubnetA
+        - !Ref PublicSubnetB
+
+  G42ElasticIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      InstanceId: !Ref EC2Instance1
+      Tags:
+          - Key: Name
+            Value: Elatic IP for G42 Instances
+
+Outputs:
+  ElasticIP:
+    Description: "Elastic IP for the Application"
+    Value: !Ref G42ElasticIP
